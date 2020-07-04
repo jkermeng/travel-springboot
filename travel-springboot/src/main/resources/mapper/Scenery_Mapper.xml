@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.SceneryMapper">
+    <resultMap id="sce" type="Scenery">
+        <id property="ts_id" column="ts_id"></id>
+        <result property="ts_url" column="ts_url"></result>
+        <result property="ts_descript" column="ts_descript"></result>
+    </resultMap>
+    <sql id="allValue">
+        ts_id,ts_url,ts_descript
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="sce">
+        select
+        <include refid="allValue"/>
+        from table_scenery
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="Scenery" resultMap="sce">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_scenery-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+    <!--    <select id="selectsByKey" parameterType="Scenery" resultMap="sce">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_scenery-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+    <!--    <select id="selectById" resultMap="sce">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_scenery-->
+    <!--        where-->
+    <!--    </select>-->
+    <!--    <update id="update" parameterType="Scenery">-->
+    <!--        update table_scenery-->
+    <!--        <set>-->
+    <!--            <if test=" !=null and  !=''">xxx=#{}</if>-->
+    <!--            <if test=" !=null and  !=''">,xxx=#{}</if>-->
+
+    <!--        </set>-->
+    <!--        where-->
+    <!--    </update>-->
+        <delete id="delete" parameterType="Scenery">
+            delete
+            from table_scenery
+            where ts_id=#{ts_id}
+        </delete>
+    <!--    <delete id="deleteByList" parameterType="java.util.List">-->
+    <!--        delete-->
+    <!--        from table_scenery-->
+    <!--        <foreach collection="list" open="where u_id in (" item="id" close=")" separator=",">-->
+    <!--            #{id}-->
+    <!--        </foreach>-->
+    <!--    </delete>-->
+        <insert id="insert" parameterType="Scenery">
+            insert into table_scenery(ts_url,ts_descript)
+            values (
+            <if test=" ts_url!=null and ts_url!=''">#{ts_url}</if>
+            <if test=" ts_descript!=null and ts_descript!=''">,#{ts_descript}</if>
+            )
+        </insert>
+</mapper>

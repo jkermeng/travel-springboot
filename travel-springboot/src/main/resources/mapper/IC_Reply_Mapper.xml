@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.IC_ReplyMapper">
+    <resultMap id="icr" type="IC_Reply">
+        <id property="ticr_id" column="ticr_id"></id>
+        <result property="tic_id" column="tic_id"></result>
+        <result property="ticr_context" column="ticr_context"></result>
+        <result property="ticr_createTime" column="ticr_createTime"></result>
+        <result property="ticr_customer_replyId" column="ticr_customer_replyId"></result>
+        <result property="tu_id" column="tu_id"></result>
+        <association property="user" column="tu_id" select="cn.jk.travel.mapper.UserMapper.selectsById" javaType="User"></association>
+    </resultMap>
+    <sql id="allValue">
+        ticr_id,tic_id,ticr_context,ticr_createTime,ticr_customer_replyId,tu_id
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="icr">
+        select
+        <include refid="allValue"/>
+        from table_ic_reply
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="IC_Reply" resultMap="icr">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_ic_reply-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+    <select id="selectsByKey" parameterType="IC_Reply" resultMap="icr">
+        select
+        <include refid="allValue"/>
+        from table_ic_reply
+        <where>
+            <if test="ticr_id!=null and ticr_id!=''">ticr_id=#{ticr_id}</if>
+            <if test="tic_id!=null and tic_id!=''">tic_id=#{tic_id}</if>
+            <if test="ticr_customer_replyId!=null and ticr_customer_replyId!=''">
+                ticr_customer_replyId=#{ticr_customer_replyId}
+            </if>
+        </where>
+    </select>
+    <!--    <select id="selectById" resultMap="icr">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_ic_reply-->
+    <!--        where-->
+    <!--    </select>-->
+    <!--    <update id="update" parameterType="IC_Reply">-->
+    <!--        update table_ic_reply-->
+    <!--        <set>-->
+    <!--            <if test=" !=null and  !=''">xxx=#{}</if>-->
+    <!--            <if test=" !=null and  !=''">,xxx=#{}</if>-->
+
+    <!--        </set>-->
+    <!--        where-->
+    <!--    </update>-->
+    <delete id="delete" parameterType="IC_Reply">
+        delete
+        from table_ic_reply
+        where ticr_id = #{ticr_id}
+    </delete>
+    <delete id="delReplyByFirstId" >
+        delete
+        from table_ic_reply
+        where tic_id = #{id}
+    </delete>
+    <!--    <delete id="deleteByList" parameterType="java.util.List">-->
+    <!--        delete-->
+    <!--        from table_ic_reply-->
+    <!--        <foreach collection="list" open="where u_id in (" item="id" close=")" separator=",">-->
+    <!--            #{id}-->
+    <!--        </foreach>-->
+    <!--    </delete>-->
+    <insert id="insert" parameterType="IC_Reply">
+        insert into table_ic_reply(tic_id,ticr_context,ticr_createTime
+        <if test=" ticr_customer_replyId!=null and ticr_customer_replyId!=''">,ticr_customer_replyId</if>,tu_id
+        )
+        values (
+        <if test=" tic_id!=null and tic_id!=''">#{tic_id}</if>
+        <if test=" ticr_context!=null and ticr_context!=''">,#{ticr_context}</if>
+        <if test=" ticr_createTime!=null ">,#{ticr_createTime}</if>
+        <if test=" ticr_customer_replyId!=null and ticr_customer_replyId!=''">,#{ticr_customer_replyId}</if>
+        <if test=" tu_id!=null and tu_id!=''">,#{tu_id}</if>
+        )
+    </insert>
+</mapper>

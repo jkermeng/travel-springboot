@@ -1,0 +1,118 @@
+#数据库连接
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/travel_springboot?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=CTT
+    username: root
+    password: 123456
+  #开发资源权限   template 下放index文件会自动打开，在springboot中，在tomcat中不会
+  resources:
+
+    #会隐藏根目录名称 直接引用根目录下的文件夹和文件
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static,classpath:/public/,file:${web.upload-path} #开放并设置静态资源根目录文件的访问权限
+    #  mvc:
+    #访问路径必须跟随一下路径填写一致，路径和上面重复会发生访问404且不会访问该路径下的文件夹和文件,避免重复路径
+    #mvc.static-path-pattern优先级比resources.static-locations高
+
+    #文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 2048MB
+
+
+  #    static-path-pattern: /css/*
+  #    view:
+  #      prefix: html/
+  #      suffix: .html
+
+
+  #mabatis使用方法
+  application:
+    name: travel-springboot
+  mvc:
+    static-path-pattern: /**
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #告诉spring获取mapper/*.xml下的文件
+  type-aliases-package: cn.jk.travel.entity #给mabatis装配实体类
+  #mybatis懒加载启动
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开发时打印执行的sql语句,mybatis的日志
+    #解决懒加载出现的jackson无法实例问题
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+  #    prefix: classpath:/templates/ #访问templates下的文件
+  #    check-template-location: true
+  #    suffix: .html #spring搜索时补齐后缀
+  #    encoding: UTF-8
+  #    content-type: text/html #文件内容格式
+  #    mode: HTML5
+  #允许相同bean封装不出错
+  main:
+    allow-bean-definition-overriding: true
+    #tomcat编码格式
+    #profiles:
+    # active: test #配置文件名称，多环境配置 文件格式‘ application-test ’
+  #redis配置方法
+  #  redis:
+  #    host: localhost
+  #    port: 6379
+  #    password:
+
+  #邮件使用方法
+  #  mail:
+  #    host:
+  #    port:
+  #    username:
+  #    password:    #授权码
+  #    default-encoding: UTF-8
+  #   protocol: smtp
+  #    properties:
+  #      mail:
+  #        smtp:
+  #           ssl:
+  #             enable: true
+  #           auth: false
+  #          socketFactory:
+  #            fallback: true
+  #          starttls:
+  #            enable: true
+  #           required: true
+
+  #一个bean的模仿
+  #使用yml配置bean属性
+  #user:
+  #  name: Tom
+  #  age: 29
+  #  birthday: 2020/2/4
+  #  list: [list1,list2,list3]
+  #  map: [k1:v1,k2:v2]
+  #  address:
+  #    city: nanning
+  #    province: guangxi
+
+  #spring.mail.host=smtp.qq.com
+  #spring.mail.port=465
+  # 你的邮箱地址
+  #spring.mail.username=123456@qq.com
+  # 你的授权码（126 和 163 以及 qq 邮箱 都需要授权码登录，没有授权码的直接登录网页版邮箱设置里设置）
+  ### QQ邮箱必须加此注解
+logging:
+  level:
+    cn.jk.travel.mapper: debug
+server:
+  servlet:
+    context-path: /api
+  port: 5001
+  address: 0.0.0.0
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+web:
+  upload-path: C:/Users/JKERmeng/statics/

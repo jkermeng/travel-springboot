@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.Post_SaleMapper">
+    <resultMap id="ps" type="Post_Sale">
+        <id property="tps_id" column="tps_id"></id>
+        <result property="to_id" column="to_id"></result>
+        <result property="tps_score" column="tps_score"></result>
+        <result property="tps_commment" column="tps_commment"></result>
+        <result property="tu_id" column="tu_id"></result>
+        <result property="tps_createTime" column="tps_createTime"></result>
+        <association property="customer" column="tu_id" select="cn.jk.travel.mapper.UserMapper.selectsById"
+                     javaType="User"></association>
+    </resultMap>
+    <sql id="allValue">
+        tps_id,to_id,tps_score,tps_commment,tu_id,tps_createTime
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="ps">
+        select
+        <include refid="allValue"/>
+        from table_post_sale
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="Post_Sale" resultMap="ps">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_post_sale-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+        <select id="selectsByKey" parameterType="Post_Sale" resultMap="ps">
+            select
+            <include refid="allValue"/>
+            from table_post_sale
+            <where>
+                <if test="to_id!=null and to_id!=''">to_id=#{to_id}</if>
+                <if test="tps_score!=null and tps_score!=''"> tps_score=#{tps_score}</if>
+                <if test="tu_id!=null and tu_id!=''"> tu_id=#{tu_id}</if>
+            </where>
+        </select>
+        <select id="selectById" resultMap="ps">
+            select
+            <include refid="allValue"/>
+            from table_post_sale
+            where tps_id=#{id}
+        </select>
+    <!--    <update id="update" parameterType="Post_Sale">-->
+    <!--        update table_post_sale-->
+    <!--        <set>-->
+    <!--            <if test=" !=null and  !=''">xxx=#{}</if>-->
+    <!--            <if test=" !=null and  !=''">,xxx=#{}</if>-->
+
+    <!--        </set>-->
+    <!--        where-->
+    <!--    </update>-->
+    <!--    <delete id="delete" parameterType="Post_Sale">-->
+    <!--        delete-->
+    <!--        from table_post_sale-->
+    <!--        where-->
+    <!--    </delete>-->
+    <!--    <delete id="deleteByList" parameterType="java.util.List">-->
+    <!--        delete-->
+    <!--        from table_post_sale-->
+    <!--        <foreach collection="list" open="where u_id in (" item="id" close=")" separator=",">-->
+    <!--            #{id}-->
+    <!--        </foreach>-->
+    <!--    </delete>-->
+        <insert id="insert" parameterType="Post_Sale" useGeneratedKeys="true" keyProperty="tps_id">
+            insert into table_post_sale(to_id,tps_score,tps_commment,tu_id,tps_createTime)
+            values (
+            <if test=" to_id!=null and to_id!=''">#{to_id}</if>
+            <if test=" tps_score!=null and tps_score!=''">,#{tps_score}</if>
+            <if test=" tps_commment!=null and tps_commment!=''">,#{tps_commment}</if>
+            <if test=" tu_id!=null and tu_id!=''">,#{tu_id}</if>
+            <if test=" tps_createTime!=null">,#{tps_createTime}</if>
+            )
+        </insert>
+</mapper>

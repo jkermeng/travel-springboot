@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.G_OrderMapper">
+    <resultMap id="go" type="G_Order">
+        <id property="to_id" column="to_id"></id>
+        <result property="tps_id" column="tps_id"></result>
+        <result property="tg_id" column="tg_id"></result>
+        <result property="to_price" column="to_price"></result>
+        <result property="to_name" column="to_name"></result>
+        <result property="to_status" column="to_status"></result>
+        <result property="to_createTime" column="to_createTime"></result>
+        <result property="tu_id" column="tu_id"></result>
+        <result property="to_title" column="to_title"></result>
+        <association property="customer" column="tu_id" select="cn.jk.travel.mapper.UserMapper.selectsById"
+                     javaType="User"></association>
+    </resultMap>
+    <sql id="allValue">
+        to_id,tps_id,tg_id,to_price,to_name,to_status,to_createTime,tu_id,to_title
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="go">
+        select
+        <include refid="allValue"/>
+        from table_order
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="G_Order" resultMap="go">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_order-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+        <select id="selectsByKey" parameterType="G_Order" resultMap="go">
+            select
+            <include refid="allValue"/>
+            from table_order
+            <where>
+                <if test=" to_id!=null and  to_id!=''">to_id=#{to_id}</if>
+                <if test=" tps_id!=null and  tps_id!=''">tps_id=#{tps_id}</if>
+                <if test=" tg_id!=null and  tg_id!=''">tg_id=#{tg_id}</if>
+                <if test=" to_price!=null and  to_price!=''">to_price=#{to_price}</if>
+                <if test=" to_name!=null and  to_name!=''">to_name=#{to_name}</if>
+                <if test=" to_status!=null and  to_status!=''">to_status=#{to_status}</if>
+                <if test=" tu_id!=null and  tu_id!=''">tu_id=#{tu_id}</if>
+
+            </where>
+        </select>
+        <select id="selectById" resultMap="go">
+            select
+            <include refid="allValue"/>
+            from table_order
+            where to_id=#{id}
+        </select>
+        <update id="update" parameterType="G_Order">
+            update table_order
+            <set>
+                <if test=" to_id!=null and  to_id!=''">to_id=#{to_id}</if>
+                <if test=" tps_id!=null and  tps_id!=''">,tps_id=#{tps_id}</if>
+                <if test=" tg_id!=null and  tg_id!=''">,tg_id=#{tg_id}</if>
+                <if test=" to_price!=null and  to_price!=''">,to_price=#{to_price}</if>
+                <if test=" to_name!=null and  to_name!=''">,to_name=#{to_name}</if>
+                <if test=" to_status!=null and  to_status!=''">,to_status=#{to_status}</if>
+            </set>
+            where to_id=#{to_id}
+        </update>
+        <delete id="delete" parameterType="G_Order">
+            delete
+            from table_order
+            where to_id=#{to_id}
+        </delete>
+        <insert id="insert" parameterType="G_Order">
+            insert into table_order(tg_id,to_price,to_name,to_createTime,tu_id,to_title)
+            values (
+            <if test=" tg_id!=null and tg_id!=''">#{tg_id}</if>
+            <if test=" to_price!=null and to_price!=''">,#{to_price}</if>
+            <if test=" to_name!=null and to_name!=''">,#{to_name}</if>
+            <if test=" to_createTime!=null">,#{to_createTime}</if>
+            <if test=" tu_id!=null and tu_id!=''">,#{tu_id}</if>
+            <if test=" to_title!=null and to_title!=''">,#{to_title}</if>
+            )
+        </insert>
+</mapper>

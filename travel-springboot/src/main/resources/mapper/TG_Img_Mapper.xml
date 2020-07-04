@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.TG_ImgMapper">
+    <resultMap id="tgimg" type="TG_Img">
+        <id property="ttgi_id" column="ttgi_id"></id>
+        <result property="tg_id" column="tg_id"></result>
+        <result property="ttgi_url" column="ttgi_url"></result>
+    </resultMap>
+    <sql id="allValue">
+        tg_id,ttgi_url,ttgi_id
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="tgimg">
+        select
+        <include refid="allValue"/>
+        from table_tg_img
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="TG_Img" resultMap="tgimg">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_tg_img-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+        <select id="selectsByKey" parameterType="TG_Img" resultMap="tgimg">
+            select
+            <include refid="allValue"/>
+            from table_tg_img
+            <where>
+                <if test="tg_id!=null and tg_id!=''">tg_id=#{tg_id}</if>
+            </where>
+        </select>
+        <select id="selectById" resultMap="tgimg">
+            select
+            <include refid="allValue"/>
+            from table_tg_img
+            where ttgi_id=#{id}
+        </select>
+<!--        <update id="update" parameterType="TG_Img">-->
+<!--            update table_tg_img-->
+<!--            <set>-->
+<!--                <if test=" !=null and  !=''">xxx=#{}</if>-->
+<!--                <if test=" !=null and  !=''">,xxx=#{}</if>-->
+<!--            </set>-->
+<!--            where-->
+<!--        </update>-->
+        <delete id="delete" parameterType="TG_Img">
+            delete
+            from table_tg_img
+            where tg_id=#{tg_id}
+        </delete>
+
+        <insert id="insert" parameterType="TG_Img">
+            insert into table_tg_img(tg_id,ttgi_url)
+            values (
+            <if test=" tg_id!=null and tg_id!=''">#{tg_id}</if>
+            <if test=" ttgi_url!=null and ttgi_url!=''">,#{ttgi_url}</if>
+            )
+        </insert>
+</mapper>

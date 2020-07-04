@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.GoodsMapper">
+    <resultMap id="goods" type="Goods">
+        <id property="tg_id" column="tg_id"></id>
+        <result property="tg_title" column="tg_title"></result>
+        <result property="tg_context" column="tg_context"></result>
+        <result property="tg_price" column="tg_price"></result>
+        <result property="tg_createTime" column="tg_createTime"></result>
+        <result property="tu_id" column="tu_id"></result>
+        <result property="tg_status" column="tg_status"></result>
+        <association property="shopper" column="tu_id" select="cn.jk.travel.mapper.UserMapper.selectsById" javaType="User"></association>
+    </resultMap>
+    <sql id="allValue">
+        tg_id,tg_title,tg_context,tg_price,tg_createTime,tu_id,tg_status
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="goods">
+        select
+        <include refid="allValue"/>
+        from table_goods
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="Goods" resultMap="goods">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_goods-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+    <select id="selectsByKey" parameterType="Goods" resultMap="goods">
+        select
+        <include refid="allValue"/>
+        from table_goods
+        <where>
+            <if test="tg_title!=null and tg_title!=''">tg_title like '%${tg_title}%'</if>
+            <if test="tu_id!=null and tu_id!=''">tu_id=#{tu_id}</if>
+
+        </where>
+    </select>
+    <select id="selectById" resultMap="goods">
+        select
+        <include refid="allValue"/>
+        from table_goods
+        where tg_id=#{id}
+    </select>
+    <update id="update" parameterType="Goods">
+        update table_goods
+        <set>
+            <if test=" tg_id!=null and  tg_id!=''">tg_id=#{tg_id}</if>
+            <if test=" tg_title!=null and  tg_title!=''">,tg_title=#{tg_title}</if>
+            <if test=" tg_context!=null and tg_context!=''">,tg_context=#{tg_context}</if>
+            <if test=" tg_price!=null and tg_price!=''">,tg_price=#{tg_price}</if>
+            <if test=" tg_status!=null and  tg_status!=''">,tg_status=#{tg_status}</if>
+        </set>
+        where tg_id = #{tg_id}
+    </update>
+    <delete id="delete" parameterType="Goods">
+        delete
+        from table_goods
+        where tg_id = #{tg_id}
+    </delete>
+
+    <insert id="insert" parameterType="Goods" useGeneratedKeys="true" keyProperty="tg_id">
+        insert into table_goods(tg_title,tg_context,tg_price,tg_createTime,tu_id)
+        values (
+        <if test=" tg_title!=null and tg_title!=''">#{tg_title}</if>
+        <if test=" tg_context!=null and tg_context!=''">,#{tg_context}</if>
+        <if test=" tg_price!=null and tg_price!=''">,#{tg_price}</if>
+        <if test=" tg_createTime!=null">,#{tg_createTime}</if>
+        <if test=" tu_id!=null and tu_id!=''">,#{tu_id}</if>
+        )
+    </insert>
+</mapper>

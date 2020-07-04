@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.G_ServerMapper">
+    <resultMap id="gs" type="G_Server">
+        <id property="ts_id" column="ts_id"></id>
+        <result property="tg_id" column="tg_id"></result>
+        <result property="ts_name" column="ts_name"></result>
+        <result property="ts_price" column="ts_price"></result>
+    </resultMap>
+    <sql id="allValue">
+        ts_id,tg_id,ts_name,ts_price
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="gs">
+        select
+        <include refid="allValue"/>
+        from table_server
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="G_Server" resultMap="gs">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_server-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+        <select id="selectsByKey" parameterType="G_Server" resultMap="gs">
+            select
+            <include refid="allValue"/>
+            from table_server
+            <where>
+                <if test=" tg_id!=null and  tg_id!=''">tg_id=#{tg_id}</if>
+                <if test=" ts_name!=null and  ts_name!=''">ts_name like '%${ts_name}%'</if>
+            </where>
+        </select>
+        <select id="selectById" resultMap="gs">
+            select
+            <include refid="allValue"/>
+            from table_server
+            where ts_id = #{id}
+        </select>
+        <update id="update" parameterType="G_Server">
+            update table_server
+            <set>
+                <if test=" ts_id!=null and  ts_id!=''">ts_id=#{ts_id}</if>
+                <if test=" tg_id!=null and  tg_id!=''">,tg_id=#{tg_id}</if>
+                <if test=" ts_name!=null and  ts_name!=''">,ts_name=#{ts_name}</if>
+                <if test=" ts_price!=null and  ts_price!=''">,ts_price=#{ts_price}</if>
+            </set>
+            where ts_id = #{ts_id}
+        </update>
+        <delete id="delete" parameterType="G_Server">
+            delete
+            from table_server
+            where ts_id = #{ts_id}
+        </delete>
+    <!--    <delete id="deleteByList" parameterType="java.util.List">-->
+    <!--        delete-->
+    <!--        from table_server-->
+    <!--        <foreach collection="list" open="where u_id in (" item="id" close=")" separator=",">-->
+    <!--            #{id}-->
+    <!--        </foreach>-->
+    <!--    </delete>-->
+        <insert id="insert" parameterType="G_Server">
+            insert into table_server(tg_id,ts_name,ts_price)
+            values (
+            <if test=" tg_id!=null and tg_id!=''">#{tg_id}</if>
+            <if test=" ts_name!=null and ts_name!=''">,#{ts_name}</if>
+            <if test=" ts_price!=null and ts_price!=''">,#{ts_price}</if>
+            )
+        </insert>
+</mapper>

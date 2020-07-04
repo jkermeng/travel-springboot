@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.TI_ImgMapper">
+    <resultMap id="tiimg" type="TI_Img">
+        <id property="ttii_id" column="ttii_id"></id>
+        <result property="ti_id" column="ti_id"></result>
+        <result property="ttii_url" column="ttii_url"></result>
+    </resultMap>
+    <sql id="allValue">
+        ti_id,ttii_url,ttii_id
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="tiimg">
+        select
+        <include refid="allValue"/>
+        from table_ti_img
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="TI_Img" resultMap="tiimg">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_ti_img-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+        <select id="selectsByKey" parameterType="TI_Img" resultMap="tiimg">
+            select
+            <include refid="allValue"/>
+            from table_ti_img
+            <where>
+                <if test="ti_id!=null and ti_id!=''">ti_id=#{ti_id}</if>
+
+            </where>
+        </select>
+        <select id="selectById" resultMap="tiimg">
+            select
+            <include refid="allValue"/>
+            from table_ti_img
+            where ttii_id=#{ttii_id}
+        </select>
+    <!--    <update id="update" parameterType="TI_Img">-->
+    <!--        update table_ti_img-->
+    <!--        <set>-->
+    <!--            <if test=" !=null and  !=''">xxx=#{}</if>-->
+    <!--            <if test=" !=null and  !=''">,xxx=#{}</if>-->
+
+    <!--        </set>-->
+    <!--        where-->
+    <!--    </update>-->
+    <!--    <delete id="delete" parameterType="TI_Img">-->
+    <!--        delete-->
+    <!--        from table_ti_img-->
+    <!--        where-->
+    <!--    </delete>-->
+    <!--    <delete id="deleteByList" parameterType="java.util.List">-->
+    <!--        delete-->
+    <!--        from table_ti_img-->
+    <!--        <foreach collection="list" open="where u_id in (" item="id" close=")" separator=",">-->
+    <!--            #{id}-->
+    <!--        </foreach>-->
+    <!--    </delete>-->
+        <insert id="insert" parameterType="TI_Img" useGeneratedKeys="true" keyProperty="ttii_id">
+            insert into table_ti_img(ti_id,ttii_url)
+            values (
+            <if test=" ti_id!=null and ti_id!=''">#{ti_id}</if>
+            <if test=" ttii_url!=null and ttii_url!=''">,#{ttii_url}</if>
+            )
+        </insert>
+</mapper>

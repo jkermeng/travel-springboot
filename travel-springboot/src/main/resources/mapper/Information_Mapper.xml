@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jk.travel.mapper.InformationMapper">
+    <resultMap id="info" type="Information">
+        <id property="ti_id" column="ti_id"></id>
+        <result property="ti_title" column="ti_title"></result>
+        <result property="ti_context" column="ti_context"></result>
+        <result property="ti_createTime" column="ti_createTime"></result>
+    </resultMap>
+    <sql id="allValue">
+        ti_id,ti_title,ti_context,ti_createTime
+    </sql>
+    <sql id="addValue">
+
+    </sql>
+    <select id="selectAll" resultMap="info">
+        select
+        <include refid="allValue"/>
+        from table_information
+    </select>
+    <!--    <select id="selectOneByKey" parameterType="Information" resultMap="info">-->
+    <!--        select-->
+    <!--        <include refid="allValue"/>-->
+    <!--        from table_information-->
+    <!--        <where>-->
+    <!--            <if test="u_id!=null and u_id!=''">u_id=#{u_id}</if>-->
+    <!--            <if test="u_id!=null and u_id!=''">and u_id=#{u_id}</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+    <select id="selectsByKey" parameterType="Information" resultMap="info">
+        select
+        <include refid="allValue"/>
+        from table_information
+        <where>
+            <if test="ti_title!=null and ti_title!=''">ti_title like '%${ti_title}%'</if>
+        </where>
+    </select>
+    <select id="selectById" resultMap="info">
+        select
+        <include refid="allValue"/>
+        from table_information
+        where ti_id=#{id}
+    </select>
+    <!--    <update id="update" parameterType="Information">-->
+    <!--        update table_information-->
+    <!--        <set>-->
+    <!--            <if test=" !=null and  !=''">xxx=#{}</if>-->
+    <!--            <if test=" !=null and  !=''">,xxx=#{}</if>-->
+
+    <!--        </set>-->
+    <!--        where-->
+    <!--    </update>-->
+        <delete id="delete" parameterType="Information">
+            delete
+            from table_information
+            where ti_id=#{ti_id}
+        </delete>
+    <!--    <delete id="deleteByList" parameterType="java.util.List">-->
+    <!--        delete-->
+    <!--        from table_information-->
+    <!--        <foreach collection="list" open="where u_id in (" item="id" close=")" separator=",">-->
+    <!--            #{id}-->
+    <!--        </foreach>-->
+    <!--    </delete>-->
+    <insert id="insert" parameterType="Information" useGeneratedKeys="true" keyProperty="ti_id">
+        insert into table_information(ti_title, ti_context, ti_createTime)
+        values (#{ti_title}, #{ti_context}, #{ti_createTime})
+    </insert>
+</mapper>
